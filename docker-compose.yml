@@ -1,0 +1,62 @@
+consul:
+    image: qnib/alpn-consul
+    ports:
+     - "8500:8500"
+    environment:
+    - DC_NAME=qnib
+    - ENABLE_SYSLOG=true
+    - BOOTSTRAP_CONSUL=true
+    - RUN_SERVER=true
+    dns: 127.0.0.1
+    hostname: consul
+    privileged: true
+
+slurmctld:
+    image: qnib/slurmctld
+    ports:
+    - "6817:6817"
+    links:
+    - consul:consul
+    environment:
+    - DC_NAME=qnib
+    volumes:
+    - ./chome/:/chome/
+    dns: 127.0.0.1
+    hostname: slurmctld
+    privileged: true
+
+compute0:
+    hostname: compute0
+    links:
+    - consul:consul
+    - slurmctld:slurmctld
+    extends:
+        file: compute.yml
+        service: compute
+
+compute1:
+    hostname: compute1
+    links:
+    - consul:consul
+    - slurmctld:slurmctld
+    extends:
+        file: compute.yml
+        service: compute
+
+compute2:
+    hostname: compute2
+    links:
+    - consul:consul
+    - slurmctld:slurmctld
+    extends:
+        file: compute.yml
+        service: compute
+
+compute3:
+    hostname: compute3
+    links:
+    - consul:consul
+    - slurmctld:slurmctld
+    extends:
+        file: compute.yml
+        service: compute

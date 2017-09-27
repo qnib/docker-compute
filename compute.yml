@@ -1,0 +1,8 @@
+compute:
+    image: qnib/compute
+    environment:
+    - DC_NAME=qnib
+    volumes:
+    - ./chome/:/chome/
+    dns: 127.0.0.1
+    privileged: true
